@@ -78,6 +78,8 @@ public class UserInterface
             addButton(buttonPanel, "*");
             addButton(buttonPanel, "=");
             
+            addButton(buttonPanel, "^");
+            
         contentPane.add(buttonPanel, BorderLayout.CENTER);
 
         status = new JLabel(calc.getAuthor());
@@ -119,7 +121,8 @@ public class UserInterface
            command.equals("9") ||
 	    	command.equals("+") ||
 	    	command.equals("-") ||
-	    	command.equals("*"))
+	    	command.equals("*") ||
+	    	command.equals("^"))
         	{
             calc.numberPressed(command);
         }

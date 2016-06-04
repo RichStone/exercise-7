@@ -123,7 +123,7 @@ public class CalcEngine
 			else if (t == 'F') {
 				stack.push(15);
 			}
-			else if(t=='+' || t=='-' || t=='*' || t=='/'){
+			else if(t=='+' || t=='-' || t=='*' || t=='/' || t == '^'){
 				int rhs = stack.top();
 				stack.pop();
 				int lhs = stack.top();
@@ -139,6 +139,10 @@ public class CalcEngine
 				}
 				if(t=='*'){
 					result = lhs * rhs;
+					stack.push(result);
+				}
+				if(t=='^') {
+					result = (int)Math.pow(lhs, rhs);
 					stack.push(result);
 				}
 				
