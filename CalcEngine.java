@@ -57,8 +57,9 @@ public class CalcEngine
     {
     	
     	//if displayValue and command Is Numeric jump out of the method
-    	//TODO also add clause for doubling operators
-    	if(!displayValue.isEmpty() && isNumeric(displayValue) && isNumeric(command)) {
+    	//TODO also add clause for avoiding of doubling operators
+    	//TODO add isALetter method to check if command is a hex to not have hex numbers a after normal numbers 
+    	if(!displayValue.isEmpty() && isNumeric(displayValue) && (isNumeric(command))) {
     		return;
     	}
     	else {
@@ -69,41 +70,6 @@ public class CalcEngine
         	}
     	}
     	
-    }
-    
-    /**
-     * the calculator accepts only single digit numbers
-     * transform a hex letter in a String of two single digit numbers
-     * and add them to numberPressed
-     * @param hexLetter pressed in the interface
-     */
-    public void hexPressed(String hexLetter) {
-    	
-    	String sumOfHex = "";
-    	
-    	if(!displayValue.isEmpty() && isNumeric(displayValue)) {
-    		return;
-    	}
-    	
-    	if(hexLetter.equals("A")) {
-    		sumOfHex = "9+1";
-    	}
-    	else if(hexLetter.equals("B")) {
-    		sumOfHex = "9+2";
-    	}
-    	else if(hexLetter.equals("C")) {
-    		sumOfHex = "9+3";
-		}
-    	else if(hexLetter.equals("D")) {
-    		sumOfHex = "9+4";
-		}
-    	else if(hexLetter.equals("E")) {
-    		sumOfHex = "9+5";
-		}
-    	else if(hexLetter.equals("F")) {
-    		sumOfHex = "9+6";
-		}
-    	numberPressed(sumOfHex);
     }
     
     /**
@@ -138,6 +104,24 @@ public class CalcEngine
 			char t = charArray[i];
 			if(t=='1' || t=='2' || t=='3' || t=='4' || t=='5' || t=='6' || t=='7' || t=='8' || t=='9'){
 				stack.push(Character.getNumericValue(charArray[i]));
+			}
+			else if (t == 'A') {
+				stack.push(10);
+			}
+			else if (t == 'B') {
+				stack.push(11);
+			}
+			else if (t == 'C') {
+				stack.push(12);
+			}
+			else if (t == 'D') {
+				stack.push(13);
+			}
+			else if (t == 'E') {
+				stack.push(14);
+			}
+			else if (t == 'F') {
+				stack.push(15);
 			}
 			else if(t=='+' || t=='-' || t=='*' || t=='/'){
 				int rhs = stack.top();
@@ -179,7 +163,7 @@ public class CalcEngine
   		for(int i = 0; i < infixString.length(); i++) {
   			charToCheck = infixString.charAt(i);
   			
-  			if(Character.isDigit(charToCheck)) {
+  			if(Character.isDigit(charToCheck) || Character.isLetter(charToCheck)) {
   				postfixString += charToCheck;
   			}
   			else {

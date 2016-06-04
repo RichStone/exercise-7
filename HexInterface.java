@@ -55,7 +55,7 @@ public class HexInterface extends UserInterface {
 	        		 command.equals("D") ||
 	        		 command.equals("E") ||
 	        		 command.equals("F")) {
-        	calc.hexPressed(command);
+        	calc.numberPressed(command);
 	        }
 	        
 	        else if(command.equals("hex")){
