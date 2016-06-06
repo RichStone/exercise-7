@@ -8,25 +8,7 @@ public class CalcEngine
 {
 	
 	private Stack<Integer> stack;	 
-	
-	char res;
-	int result; 
-	
-    // The calculator's state is maintained in three fields:
-    //     buildingDisplayValue, haveLeftOperand, and lastOperator.
-    
-    // Are we already building a value in the display, or will the
-    // next digit be the first of a new one?
-    private boolean buildingDisplayValue;
-    // Has a left operand already been entered (or calculated)?
-    private boolean haveLeftOperand;
-    // The most recent operator that was entered.
-    private char lastOperator;
-    // The current value (to be) shown in the display.
-//    private int displayValue;
-    // The value of an existing left operand.
-    private int leftOperand;
-    
+
     String displayValue = "";
 
     /**
@@ -91,6 +73,8 @@ public class CalcEngine
     }
 
 	public int evaluate (String pfx){
+		char res;
+		int result; 
 		int stringLength = pfx.length();				//Länge des Strings
 		char[] charArray = new char[stringLength];
 		
@@ -222,9 +206,6 @@ public class CalcEngine
      */
     public void clear()
     {
-        lastOperator = '?';
-        haveLeftOperand = false;
-        buildingDisplayValue = false;
         displayValue = "";
     }
 
@@ -250,16 +231,6 @@ public class CalcEngine
     public String getVersion()
     {
        return "Version 1.0";
-    }
-
-    /**
-     * Report an error in the sequence of keys that was pressed.
-     */
-    private void keySequenceError()
-    {
-        System.out.println("A key sequence error has occurred.");
-        // Reset everything.
-        clear();
     }
     
 }
