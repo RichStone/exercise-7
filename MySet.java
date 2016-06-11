@@ -2,10 +2,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.lang.Iterable;
 
-public abstract class MySet<T> implements Iterable<T>{
+public class MySet<T> implements Iterable<T>, Collection<T> {
 
 	//implement set using an ArrayList
-	ArrayList<T> list = new ArrayList<T>();
+	private ArrayList<T> list;
+		
+	public MySet() {
+		list = new ArrayList<T>();
+	}
+	
 	
 	//add
 	public boolean add(T obj) {

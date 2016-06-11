@@ -1,5 +1,5 @@
 
-import java.util.HashSet;
+//import java.util.HashSet;
 import java.util.Iterator;
 
 /**
@@ -11,8 +11,8 @@ import java.util.Iterator;
 public class CalcEngine
 {	
 
-	private HashSet<Integer> setRight;
-	private HashSet<Integer> setLeft;
+	private MySet<Integer> setRight;
+	private MySet<Integer> setLeft;
 	
     String displayValue = "";
 
@@ -44,9 +44,9 @@ public class CalcEngine
         		displayValue += command;
     }
     
-	public HashSet<Integer> evaluateStringToSet (String setString){
+	public MySet<Integer> evaluateStringToSet (String setString){
 		
-		HashSet<Integer> set = new HashSet<>();
+		MySet<Integer> set = new MySet<Integer>();
 		
 		String setGesplittet [];
 		
@@ -141,7 +141,7 @@ public class CalcEngine
     	//end the method using return if one is found
     	String numberOfElements = "";
     	
-    	HashSet<Integer> setToCount = new HashSet<>();
+    	MySet<Integer> setToCount = new MySet<>();
     	
     	setToCount = evaluateStringToSet(displayValue);
     	
