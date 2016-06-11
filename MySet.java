@@ -1,14 +1,19 @@
 import java.util.ArrayList;
-import java.util.Collection;
-import java.lang.Iterable;
+import java.util.Iterator;
 
-public class MySet<T> implements Iterable<T>, Collection<T> {
+
+public class MySet<T>{
 
 	//implement set using an ArrayList
 	private ArrayList<T> list;
+	Iterator<T> it;
 		
 	public MySet() {
 		list = new ArrayList<T>();
+	}
+	
+	public ArrayList<T> getList()  {
+		return list;
 	}
 	
 	
@@ -28,11 +33,16 @@ public class MySet<T> implements Iterable<T>, Collection<T> {
 	}
 	
 	//addAll method
-	public boolean addAll(Collection <T> collectionToAdd) {
+	public boolean addAll(MySet <T> collectionToAdd) {
+		//memorize initial size
 		int initialSize = list.size();
-		for(T obj : collectionToAdd) {
-			if(!list.contains(obj)){
-				list.add(obj);
+		
+		it = collectionToAdd.getList().iterator();
+		
+		while(it.hasNext()) {
+			T objectOfInitialSet = it.next();
+			if(!list.contains(objectOfInitialSet)){
+				list.add(objectOfInitialSet);
 			}
 		}
 		
@@ -46,10 +56,14 @@ public class MySet<T> implements Iterable<T>, Collection<T> {
 	
 	//remove
 	public boolean remove(T obj) {
+		
 		int initialSize = list.size();
+		
+		
 		if(list.contains(obj)){
 			list.remove(obj);
 		}
+		
 		if(list.size() == initialSize) {
 			return false;
 		}
@@ -59,11 +73,15 @@ public class MySet<T> implements Iterable<T>, Collection<T> {
 	}
 	
 	//removeAll 
-	public boolean removeAll(Collection <T> collectionToAdd) {
+	public boolean removeAll(MySet <T> collectionToRemove) {
 		int initialSize = list.size();
-		for(T obj : collectionToAdd) {
-			if(list.contains(obj)){
-				list.remove(obj);
+		
+		it = collectionToRemove.getList().iterator();
+		
+		while(it.hasNext()) {
+			T objectOfInitialSet = it.next();
+			if(list.contains(objectOfInitialSet)){
+				list.remove(objectOfInitialSet);
 			}
 		}
 		
@@ -75,13 +93,22 @@ public class MySet<T> implements Iterable<T>, Collection<T> {
 		}
 	}
 	//retainAll
-	public boolean retainAll(Collection <T> collectionToAdd) {
+	public boolean retainAll(MySet <T> collectionToAdd) {
 		int initialSize = list.size();
-		for(T obj : collectionToAdd) {
+		
+		//create new list where the doubled elements will be stored
+		ArrayList<T> listOfDuplicates = new ArrayList<T>();
+		
+		it = collectionToAdd.getList().iterator();
+		
+		while(it.hasNext()) {
+			T obj = it.next();
 			if(list.contains(obj)){
-				list.remove(obj);
+				listOfDuplicates.add(obj);
 			}
 		}
+		
+		list = listOfDuplicates;
 		
 		if(list.size() == initialSize) {
 			return false;
@@ -93,10 +120,14 @@ public class MySet<T> implements Iterable<T>, Collection<T> {
 	
 	//toString
 	public String toString() {
-		String outputString = "";
+		String outputString = "[ ";
 		for(T obj : list){
-			outputString += obj.toString();
+			outputString += obj.toString() + ", ";
 		}
+		
+		outputString = outputString.substring(0, outputString.length()-2);
+		outputString += " ]";
+		
 		return outputString;
 	}
 

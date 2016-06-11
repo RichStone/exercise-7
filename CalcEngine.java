@@ -108,7 +108,7 @@ public class CalcEngine
     		subtractSets();
     	}
     	else if(operator.equals("\u2229")) {
-    		interesectionOfSets();
+    		intersectionOfSets();
     	}
     	
     }
@@ -127,7 +127,7 @@ public class CalcEngine
     	displayValue = setLeft.toString();
     }
     
-    public void interesectionOfSets() {	//geschnitten
+    public void intersectionOfSets() {	//geschnitten
     	//create new set with corresponding elements of the two sets
     	setLeft.retainAll(setRight);
     	displayValue = setLeft.toString();
