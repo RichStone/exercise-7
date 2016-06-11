@@ -15,8 +15,7 @@ public class HexCalculator
      */
     public HexCalculator()
     {
-    	Stack<Integer> stack = new Stack<> ();
-        engine = new CalcEngine(stack);
+        engine = new CalcEngine();
         gui = new HexInterface(engine);
     }
     

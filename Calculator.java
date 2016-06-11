@@ -16,7 +16,7 @@ public class Calculator
      */
     public Calculator()
     {
-        engine = new CalcEngine(stack);
+        engine = new CalcEngine();
         gui = new UserInterface(engine);
     }
     

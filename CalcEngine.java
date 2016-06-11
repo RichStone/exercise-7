@@ -1,3 +1,7 @@
+
+import java.util.HashSet;
+import java.util.Iterator;
+
 /**
  * The main part of the calculator doing the calculations.
  * 
@@ -5,19 +9,19 @@
  * @version 2008.03.30
  */
 public class CalcEngine
-{
-	
-	private Stack<Integer> stack;	 
+{	
 
+	private HashSet<Integer> setRight;
+	private HashSet<Integer> setLeft;
+	
     String displayValue = "";
 
     /**
      * Create a CalcEngine.
      */
-    public CalcEngine(Stack<Integer> stack)
+    public CalcEngine()
     {
-    	this.stack = stack;
-        clear();
+    	
     }
 
     /**
@@ -37,167 +41,115 @@ public class CalcEngine
      */
     public void numberPressed(String command)
     {
-    	
-    	//if displayValue and command Is Numeric jump out of the method
-    	//TODO also add clause for avoiding of doubling operators
-    	//TODO add isALetter method to check if command is a hex to not have hex numbers a after normal numbers 
-    	if(!displayValue.isEmpty() && isNumeric(displayValue) && (isNumeric(command))) {
-    		return;
-    	}
-    	else {
-    		
-    		displayValue += command;
-    		if(displayValue.substring(0).equals("+") || displayValue.substring(0).equals("*")) {
-        		displayValue = "";
-        	}
-    	}
-    	
+        		displayValue += command;
     }
     
-    /**
-     * check if last character of a String is an Integer
-     */
-    public boolean isNumeric(String str) {
-    	
-    	//extract last character from command
-    	String lastCharacterOfString = str.substring(str.length() - 1);
-    	
-    	//try if it's possible to parse the character as an int
-    	try {
-    		int i = Integer.parseInt(lastCharacterOfString);
-    	}
-    	catch(NumberFormatException nfe) {
-    		return false;
-    	}
-    	return true;
-    }
-
-	public int evaluate (String pfx){
-		char res;
-		int result; 
-		int stringLength = pfx.length();				//Länge des Strings
-		char[] charArray = new char[stringLength];
+	public HashSet<Integer> evaluateStringToSet (String setString){
 		
-		pfx.getChars(0, stringLength, charArray, 0);	//String in Char-Array einspeichern
+		HashSet<Integer> set = new HashSet<>();
 		
-		// for(int l=0; l<stringLength; l++){
-		// 	System.out.println(charArray[l]);
-		// }
+		String setGesplittet [];
 		
-		for(int i=0; i<stringLength; i++){
-			char t = charArray[i];
-			if(t=='1' || t=='2' || t=='3' || t=='4' || t=='5' || t=='6' || t=='7' || t=='8' || t=='9'){
-				stack.push(Character.getNumericValue(charArray[i]));
-			}
-			else if (t == 'A') {
-				stack.push(10);
-			}
-			else if (t == 'B') {
-				stack.push(11);
-			}
-			else if (t == 'C') {
-				stack.push(12);
-			}
-			else if (t == 'D') {
-				stack.push(13);
-			}
-			else if (t == 'E') {
-				stack.push(14);
-			}
-			else if (t == 'F') {
-				stack.push(15);
-			}
-			else if(t=='+' || t=='-' || t=='*' || t=='/' || t == '^'){
-				int rhs = stack.top();
-				stack.pop();
-				int lhs = stack.top();
-				stack.pop();
-				
-				if(t=='+'){
-					result = lhs + rhs;
-					stack.push(result);
-				}
-				if(t=='-'){
-					result = lhs - rhs;
-					stack.push(result);
-				}
-				if(t=='*'){
-					result = lhs * rhs;
-					stack.push(result);
-				}
-				if(t=='^') {
-					result = (int)Math.pow(lhs, rhs);
-					stack.push(result);
-				}
-				
-				//not present in our calculator yet
-//				if(t=='/'){
-//					result = lhs / rhs;
-//					stack.push(result);
-//				}
-				
-			}
+		//divide String where the commatas are, parse to int and add to Set
+		setGesplittet = setString.split(",");
+		
+		for(int i = 0; i < setGesplittet.length;i++) {
+			set.add(Integer.parseInt(setGesplittet[i]));
 		}
-		return stack.top();
-	}
-  //create a stack for storage of operators in ifx to pfx method
-  	Stack<Character> operatorStack = new Stack <Character> ();
-  	
-  	public String infixToPostfix(String infixString){
-  		
-  		String postfixString = "";
-  		char charToCheck = 0;
-  		
-  		for(int i = 0; i < infixString.length(); i++) {
-  			charToCheck = infixString.charAt(i);
-  			
-  			if(Character.isDigit(charToCheck) || Character.isLetter(charToCheck)) {
-  				postfixString += charToCheck;
-  			}
-  			else {
-  				while(!operatorStack.isEmpty() && getPrecedence(charToCheck) <= getPrecedence(operatorStack.top())) {
-  					postfixString += operatorStack.pop();
-  				}
-  				operatorStack.push(charToCheck);
-  			}
-  		}
-  		
-  		while(!operatorStack.isEmpty()) {
-  			postfixString += operatorStack.pop();
-  		}
-  		
-  		return postfixString;
-  	}
-  	
-  	
-  	
-  	public int getPrecedence(char c){
-  		
-  		int returnValue = -1;
-  		
-  		switch(c){
-  			case '+' : 
-  			case '-' : returnValue = 0;  break;
-  			case '*' : 
-  			case '/' : returnValue = 1;  break;
-  			case '^' : returnValue = 2;  break;
-  			default  : returnValue = -1; break;		
-  		}
-  		
-  		return returnValue;
-  	}
+		
+		return set;
+	}  	
+
     /**
      * The '=' button was pressed.
      */
     public void equals()
     {	
-    	String postfix = "";
+    	String setString[];
+    	String operator = "";
     	
-    	postfix = infixToPostfix(displayValue);
+    	//extract operator
+    	for(int i = 0; i < displayValue.length()-1;i++) {
+    		
+    		String string = displayValue.substring(i,i+1);
+    		
+    		if(string.equals("U")) {
+    			operator = "U";
+    		}
+    		else if (string.equals("-")) {
+    			operator = "-";
+    		}
+    		else if (string.equals("\u2229")) {
+    			operator = "\u2229";
+    		}
+    	}
     	
-    	String evaluatedPostfix = Integer.toString(evaluate(postfix));
+    	//divide displayValue String where the operator is
+    	if(operator.equals("U")) {
+    		setString = displayValue.split("U");
+    	}
+    	else if(operator.equals("-")) {
+    		setString = displayValue.split("-");
+    	}
+    	else {
+    		setString = displayValue.split("\u2229");
+    	}
     	
-    	displayValue = evaluatedPostfix;
+    	//left set
+    	setLeft = evaluateStringToSet(setString[0]);
+    	//right set
+    	setRight = evaluateStringToSet(setString[1]);
+    	
+    	//apply operator
+    	if(operator.equals("U")) {
+    		sumUpSets();
+    	}
+    	else if(operator.equals("-")) {
+    		subtractSets();
+    	}
+    	else if(operator.equals("\u2229")) {
+    		interesectionOfSets();
+    	}
+    	
+    }
+    
+
+    public void sumUpSets() {
+    	//just add one set in another
+    	setLeft.addAll(setRight);
+    	System.out.println(setLeft.toString());
+    	
+    	displayValue = setLeft.toString();
+    }
+    
+    public void subtractSets() {
+    	setLeft.removeAll(setRight);
+    	displayValue = setLeft.toString();
+    }
+    
+    public void interesectionOfSets() {	//geschnitten
+    	//create new set with corresponding elements of the two sets
+    	setLeft.retainAll(setRight);
+    	displayValue = setLeft.toString();
+    }
+    
+    /**
+     * set displayValue to the number of ints in the set
+     */
+    public String countElements() {
+    	//TODO look for symbols besides ints and commatas in the String
+    	//end the method using return if one is found
+    	String numberOfElements = "";
+    	
+    	HashSet<Integer> setToCount = new HashSet<>();
+    	
+    	setToCount = evaluateStringToSet(displayValue);
+    	
+    	numberOfElements += setToCount.size();
+    	
+    	displayValue = numberOfElements;
+    	
+    	return numberOfElements;
     }
 
     /**
@@ -233,4 +185,22 @@ public class CalcEngine
        return "Version 1.0";
     }
     
+    /**
+     * check if last character of a String is an Integer
+     * @deprecated
+     */
+    public boolean isNumeric(String str) {
+    	
+    	//extract last character from command
+    	String lastCharacterOfString = str.substring(str.length() - 1);
+    	
+    	//try if it's possible to parse the character as an int
+    	try {
+    		int i = Integer.parseInt(lastCharacterOfString);
+    	}
+    	catch(NumberFormatException nfe) {
+    		return false;
+    	}
+    	return true;
+    }
 }

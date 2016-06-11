@@ -73,12 +73,15 @@ public class UserInterface
             addButton(buttonPanel, "3");
             addButton(buttonPanel, "0");
             
-            addButton(buttonPanel, "+");
+            addButton(buttonPanel, "U");
             addButton(buttonPanel, "-");
-            addButton(buttonPanel, "*");
+            addButton(buttonPanel, "\u2229");
             addButton(buttonPanel, "=");
             
             addButton(buttonPanel, "^");
+            addButton(buttonPanel, ",");
+            // TE = Total Elements Button -> counts all elements in the given set
+            addButton(buttonPanel, "TE");
             
         contentPane.add(buttonPanel, BorderLayout.CENTER);
 
@@ -119,22 +122,15 @@ public class UserInterface
            command.equals("7") ||
            command.equals("8") ||
            command.equals("9") ||
-	    	command.equals("+") ||
+           command.equals("U") ||
 	    	command.equals("-") ||
-	    	command.equals("*") ||
+	    	command.equals("\u2229") ||
+	    	command.equals(",") ||
 	    	command.equals("^"))
         	{
             calc.numberPressed(command);
         }
-//        else if() {
-//            calc.plus();
-//        }
-//        else if(command.equals("-")) {
-//            calc.minus();
-//        }
-//        else if(command.equals("*")) {
-//            calc.times();
-//        }
+        
         else if(command.equals("=")) {
             calc.equals();
         }
@@ -143,6 +139,9 @@ public class UserInterface
         }
         else if(command.equals("?")) {
             showInfo();
+        }
+        else if(command.equals("TE")) {
+            calc.countElements();
         }
         // else unknown command.
 
